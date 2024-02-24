@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AssetPackage Version="0.1.0">
+	<ItemSettings>
+		<ContentType>SCENERY</ContentType>
+		<Title>a1</Title>
+		<Manufacturer/>
+		<Creator>ALFONSO SILONIZ</Creator>
+	</ItemSettings>
+	<Flags>
+		<VisibleInStore>false</VisibleInStore>
+		<CanBeReferenced>false</CanBeReferenced>
+	</Flags>
+	<AssetGroups>
+		<AssetGroup Name="ContentInfo">
+			<Type>ContentInfo</Type>
+			<Flags>
+				<FSXCompatibility>false</FSXCompatibility>
+			</Flags>
+			<AssetDir>PackageDefinitions\aquilon-a1\ContentInfo</AssetDir>
+			<OutputDir>ContentInfo\aquilon-a1</OutputDir>
+		</AssetGroup>
+		<AssetGroup Name="a2">
+			<Type>BGL</Type>
+			<Flags>
+				<FSXCompatibility>false</FSXCompatibility>
+			</Flags>
+			<AssetDir>PackageSources\Scenery\a1\a2\</AssetDir>
+			<OutputDir>Scenery\a1\a2\</OutputDir>
+		</AssetGroup>
+	</AssetGroups>
+</AssetPackage>
+

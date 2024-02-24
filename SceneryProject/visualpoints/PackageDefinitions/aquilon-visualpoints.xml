@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AssetPackage Version="0.1.0">
+	<ItemSettings>
+		<ContentType>SCENERY</ContentType>
+		<Title>visualpoints</Title>
+		<Manufacturer/>
+		<Creator>ALFONSO SILONIZ</Creator>
+	</ItemSettings>
+	<Flags>
+		<VisibleInStore>false</VisibleInStore>
+		<CanBeReferenced>false</CanBeReferenced>
+	</Flags>
+	<AssetGroups>
+		<AssetGroup Name="ContentInfo">
+			<Type>ContentInfo</Type>
+			<Flags>
+				<FSXCompatibility>false</FSXCompatibility>
+			</Flags>
+			<AssetDir>PackageDefinitions\aquilon-visualpoints\ContentInfo</AssetDir>
+			<OutputDir>ContentInfo\aquilon-visualpoints</OutputDir>
+		</AssetGroup>
+		<AssetGroup Name="visualpoints">
+			<Type>BGL</Type>
+			<Flags>
+				<FSXCompatibility>false</FSXCompatibility>
+			</Flags>
+			<AssetDir>PackageSources\Scenery\visualpoints\visualpoints\</AssetDir>
+			<OutputDir>Scenery\visualpoints\visualpoints\</OutputDir>
+		</AssetGroup>
+	</AssetGroups>
+</AssetPackage>
+
