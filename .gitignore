@@ -1,3 +1,5 @@
+*.pln
+visualpoints.*
 *.swp
 *.*~
 project.lock.json
