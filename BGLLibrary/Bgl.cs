@@ -63,9 +63,6 @@ public class SceneryObjectSection {
 
     public const UInt32 LENGTH = 20;
 
-    
-    private int HeaderLength = 0;
-
     List<SubSection> SubSections = new();
 
     UInt32 Type = 0x25;
@@ -77,8 +74,6 @@ public class SceneryObjectSection {
     public void AddSubSection(SubSection SubSec) {
         this.SubSections.Add(SubSec);
     }
-
-    public int GetHeaderLength() { return this.HeaderLength;}
 
     public byte[] GetHeaderBytes() {
 
@@ -106,11 +101,6 @@ public class SceneryObjectSection {
         Buffer.BlockCopy(tmpArr,0,buffer,0,headerSize);
 
         return buffer;
-    }
-
-    public void GetSectionBytes() {
-
-
     }
 
     public  List<SubSection> GetSubsections()
@@ -217,8 +207,6 @@ public class LibraryObject {
     public byte[] Name {get; set;}= new byte[16];
 
     public float Scale {get; set;}= 1.0f;
-    public double V1 { get; }
-    public double V2 { get; }
 
     public byte[] GetBytes() {
         List<byte[]> LHdr = new();
@@ -315,7 +303,6 @@ public class Bgl
     }
 
     public void BuildBGLFile() {
-
 
         logger.Information("### BUILDING BGL FILE ###");
 

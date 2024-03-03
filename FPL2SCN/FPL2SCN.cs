@@ -9,53 +9,38 @@ namespace VisualPointsNamespace
     using BGLLibrary;
     using CommandLine;
     using CoordinateSharp;
+    using Microsoft.Extensions.Configuration;
     using Serilog;
 
     internal sealed class FPL2SCN
     {
-    /*  TODO: Take this from a configuration file so anybody can change them
-
-        C0 AHS_Banderas_Europa {1270C61D-B95D-42B1-A223-A0EF40FC640C}
-        C1 Vegetacion Elm1_20m {17FCC022-BDF4-4C47-A5B5-0E43EA9BBDCB}
-        C2 Vegetacion ASpen 11m {71DC5285-56DF-4328-919C-CD0D63CC0CCF}
-        C3 towerfirespot01 {F9CF3024-4430-4CA6-ADAB-2B3D69217CC1}
-        C4 Antena pequeña checkered {C545A270-E2EC-11D2-9C84-00105A0CE62A}
-        C5 Aerogenerador {DF297AF7-A5A1-4F79-AC8D-FD892E7FF308}
-        C6 Torre Agua {567C15BF-E002-4DE9-A38C-B68C55135A8A}
-        C7 Antena Torre aeropuerto {CC3E07B2-9539-4A9C-A4C2-98A080518F04}
-    */
-        private static string[] objectReference =
-        [
-            "1270C61D-B95D-42B1-A223-A0EF40FC640C",
-            "17FCC022-BDF4-4C47-A5B5-0E43EA9BBDCB",
-            "71DC5285-56DF-4328-919C-CD0D63CC0CCF",
-            "F9CF3024-4430-4CA6-ADAB-2B3D69217CC1",
-            "C545A270-E2EC-11D2-9C84-00105A0CE62A",
-            "DF297AF7-A5A1-4F79-AC8D-FD892E7FF308",
-            "567C15BF-E002-4DE9-A38C-B68C55135A8A",
-            "CC3E07B2-9539-4A9C-A4C2-98A080518F04"
-        ];
-
-        private static bool isReferenceCode(string code)
+        private static bool HasReferenceCode(string id,  IEnumerable<KeyValuePair<string, string>> kv)
         {
-            switch (code.ToLower())
+            string code = id.Split(" ")[0];
+            IEnumerable<string> keys = kv.Select(x => x.Key); // To get the keys.
+            if (keys.Contains("PointsDefinition:" + code))
             {
-                case "c0":
-                case "c1":
-                case "c2":
-                case "c3":
-                case "c4":
-                case "c5":
-                case "c6":
-                case "c7":
-                    return true;
-                default:
-                    return false;
+                return true;
             }
+
+            return false;
+        }
+
+        private static string ObjectName(string id, IEnumerable<KeyValuePair<string, string>> kv)
+        {
+            string code = id.Split(" ")[0];
+            foreach (var tuple in from tuple in kv
+                                  where "PointsDefinition:" + code == tuple.Key
+                                  select tuple)
+            {
+                return tuple.Value;
+            }
+
+            return string.Empty;
         }
 
         // https://stackoverflow.com/questions/11492705/how-to-create-an-xml-document-using-xmldocument
-        static void createXML(List<Point> points, string fileName)
+        private static void CreateXML(List<Point> points, string fileName)
         {
             XmlDocument doc = new ();
             XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", null, null);
@@ -88,7 +73,7 @@ namespace VisualPointsNamespace
 
                 XmlElement element3 = doc.CreateElement(string.Empty, "LibraryObject", string.Empty);
 
-                element3.SetAttribute("name", "{" + objectReference[point.Code] + "}");
+                // TODO: UNCOMMENT element3.SetAttribute("name", "{" + objectReference[point.Code] + "}");
                 element3.SetAttribute("scale", "1.0");
 
                 element2.AppendChild(element3);
@@ -110,6 +95,12 @@ namespace VisualPointsNamespace
 
             string outputFileName = Directory.GetCurrentDirectory() + "/SceneryProject/visualpoints/PackageSources/Scenery/visualpoints/visualpoints/visualpoints.xml";
 
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("fpl2scn.config", optional: true, reloadOnChange: true)
+                .Build();
+
+            IEnumerable<KeyValuePair<string, string>> pointsDefinition = configuration.GetSection("PointsDefinition").AsEnumerable();
             logger.Information("FPL2SCN Convert a MSFS2020 Fligh Plan to a Scenery Package");
 
             var t = Parser.Default.ParseArguments<Options>(args)
@@ -160,8 +151,7 @@ namespace VisualPointsNamespace
                         string description;
 
                         // Identify if this is one waypoint to be referenced
-                        var codes = id.Split(" ");
-                        if (codes.Length > 0 && isReferenceCode(codes[0]))
+                        if (id != null && HasReferenceCode(id, pointsDefinition))
                         {
                             // Fill the point with the adecquate values according to the PLN format
                             foreach (XmlNode child in children)
@@ -191,9 +181,10 @@ namespace VisualPointsNamespace
                                 Coordinate c = Coordinate.Parse(clearPosition[0] + " " + clearPosition[1], new DateTime(2023, 2, 24, 10, 10, 0));
                                 Point p;
                                 p.C = c;
-                                p.Code = (int)codes[0][1] - 48;
+                                p.Code = 0;
                                 points.Add(p);
-                                LibraryObject lObj = new LibraryObject((string)objectReference[p.Code], c.Longitude.ToDouble(), c.Latitude.ToDouble());
+
+                                LibraryObject lObj = new LibraryObject(ObjectName(id, pointsDefinition), c.Longitude.ToDouble(), c.Latitude.ToDouble());
                                 logger.Debug("Added point {0} Lon {1} Lat {2}", id, c.Longitude.ToDouble(), c.Latitude.ToDouble());
                                 bgl.AddLibraryObject(lObj);
                                 numberOfPoints++;
@@ -212,7 +203,7 @@ namespace VisualPointsNamespace
                     // the generated by the MSFS compiler
                     if (options.CreateXML)
                     {
-                        createXML(points, outputFileName);
+                        CreateXML(points, outputFileName);
                     }
 
                     // Create the BGL file in the MSFS scenery Package

@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="CoordinateSharp" Version="2.22.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="pythonnet" Version="3.0.3" />
     <Content Include="MSFS_Package\**"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
