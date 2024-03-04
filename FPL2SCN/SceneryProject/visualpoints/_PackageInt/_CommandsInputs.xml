@@ -1,10 +1,10 @@
 <CommandsInputs>
-	<File Path="D:\DEVEL\CodeSample\FPL2SCN\SceneryProject\visualpoints\PackageDefinitions\aquilon-visualpoints\ContentInfo\Thumbnail.jpg" Failure="0">
+	<File Path="D:\DEVEL\MSFSTools\FPL2SCN\SceneryProject\visualpoints\PackageDefinitions\aquilon-visualpoints\ContentInfo\Thumbnail.jpg" Failure="0">
 		<Package Name="aquilon-visualpoints" Failure="0">
 			<AssetGroup Name="ContentInfo"/>
 		</Package>
 	</File>
-	<File Path="D:\DEVEL\CodeSample\FPL2SCN\SceneryProject\visualpoints\PackageSources\Scenery\visualpoints\visualpoints\visualpoints.xml" Failure="0">
+	<File Path="D:\DEVEL\MSFSTools\FPL2SCN\SceneryProject\visualpoints\PackageSources\Scenery\visualpoints\visualpoints\visualpoints.xml" Failure="0">
 		<Package Name="aquilon-visualpoints" Failure="0">
 			<AssetGroup Name="visualpoints"/>
 		</Package>
