@@ -20,6 +20,9 @@
     <AdditionalFiles Include="stylecop.json" />    
     <Content Include="MSFS_Package\**"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </Content>      
+    </Content>
+    <Content Include="SceneryPackage\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content>          
   </ItemGroup>
 </Project>
