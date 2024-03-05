@@ -7,6 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SelfContained>false</SelfContained>
     <Nullable>enable</Nullable>
+    <CodeAnalysisRuleSet>Extensions.ruleset</CodeAnalysisRuleSet>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,9 +16,6 @@
     <PackageReference Include="CoordinateSharp" Version="2.22.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="pythonnet" Version="3.0.3" />
-    <Content Include="MSFS_Package\**"> 
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
-    </Content>
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" /> 
@@ -24,7 +23,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <AdditionalFiles Include="stylecop.json" />
 
+    <Content Include="fpl2scn.config"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content>    
   </ItemGroup>
 
   <ItemGroup>
