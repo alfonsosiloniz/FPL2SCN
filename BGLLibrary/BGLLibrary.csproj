@@ -21,7 +21,7 @@
     <Content Include="MSFS_Package\**"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
     </Content>
-    <Content Include="SceneryPackage\**"> 
+    <Content Include="SceneryProject\**"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
     </Content>          
   </ItemGroup>
