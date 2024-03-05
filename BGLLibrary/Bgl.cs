@@ -162,7 +162,7 @@
                             logger.Debug("{0}", qmid);
                         }
 
-                        Console.WriteLine("**********************");
+                        logger.Debug("**********************");
 
                         // foreach (QMID qmid in tmpQMIDs)
                         int tmpIndex = 0;
