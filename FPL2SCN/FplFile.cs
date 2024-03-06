@@ -83,6 +83,9 @@ namespace VisualPointsNamespace
                                 p.C = c;
                                 p.Code = id;
                                 p.GUID = ObjectName(id, pointsDefinition);
+                                p.isAgl = true;
+                                p.Altitude = "0";
+                                p.Heading = "180";
 
                                 Points.Add(p);
                             }

@@ -11,13 +11,14 @@ namespace VisualPointsNamespace
 
     public abstract class XmlFile : IXmlFile
     {
-#pragma warning disable SA1401 // Fields should be private
         protected Logger logger = new LoggerConfiguration()
-#pragma warning restore SA1401 // Fields should be private
                             .WriteTo.Console()
                             .WriteTo.Debug()
                             .MinimumLevel.Debug()
                             .CreateLogger();
+
+        protected bool UseAltitude = false;
+        protected bool UseHeading = false;
 
         public List<Point> Points { get; set; } = new ();
 
@@ -31,6 +32,16 @@ namespace VisualPointsNamespace
         public virtual List<Point> GetPoints(IEnumerable<KeyValuePair<string, string>> pointsDefinition)
         {
             return Points;
+        }
+
+        void IXmlFile.UseAltitude(bool useAltitude)
+        {
+            UseAltitude = useAltitude;
+        }
+
+        void IXmlFile.UseHeading(bool useHeading)
+        {
+            UseHeading = useHeading;
         }
     }
 }

@@ -49,23 +49,77 @@ namespace VisualPointsNamespace
                     if (xmlnode is not null)
                     {
                         XmlNode? name = xmlnode.SelectNodes("./kml:name", manager)?[0];
-                        XmlNode? coordinates = xmlnode.SelectNodes("./*/kml:coordinates", manager)?[0];
-                        XmlNode? altitude = xmlnode.SelectNodes("./*/kml:altitude", manager)?[0];
-                        XmlNode? heading = xmlnode.SelectNodes("./*/kml:heading", manager)?[0];
+                        XmlNode? lookAt = xmlnode.SelectNodes("./kml:LookAt", manager)?[0];
+                        XmlNode? point = xmlnode.SelectNodes("./kml:Point", manager)?[0];
+                        XmlNode? coordinates = point.SelectNodes("./kml:coordinates", manager)?[0];
+                        XmlNodeList? altModeNode = point.SelectNodes("./kml:altitudeMode", manager);
+                        string? altMode = null;
+
+                        if (altModeNode is not null && altModeNode.Count > 0)
+                        {
+                            XmlNode node = altModeNode[0];
+                            altMode = node.InnerText;
+                        }
+
+                        // XmlNode? altitude = xmlnode.SelectNodes("./*/kml:altitude", manager)?[0];
                         string? pointName = name?.InnerText;
                         string? coords = coordinates?.InnerText;
 
+                        string[] clearPosition = coords.Trim().Split(",");
+                        string? longitude = clearPosition[0];
+                        string? latitude = clearPosition[1];
+                        string? altitude = "0";
+                        string? heading = "0";
+
+                        // KML from google Earth have different options for altitude (from ground, from sea level)
+                        // By default, we will consider the altitudes are absolute unless the user selects
+                        // relative To Ground
+                        bool isAgl = true;
+
+                        if (UseAltitude)
+                        {
+                            altitude = clearPosition[2];
+                            if (altMode is not null)
+                            {
+                                switch (altMode)
+                                {
+                                    case "relativeToGround":
+                                        isAgl = true;
+                                        break;
+                                    case "absolute":
+                                    case "clampToSeaFloor":
+                                    case "relativeToSeaFloor":
+                                        isAgl = false;
+                                        break;
+                                    default:
+                                        isAgl = false;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                // If UseAltitude option is selected but there is no altMode
+                                // Consider it absolute
+                                isAgl = false;
+                            }
+                        }
+
+                        if (UseHeading)
+                        {
+                            heading = xmlnode.SelectNodes("./*/kml:heading", manager)?[0].InnerText;
+                        }
+
                         if (pointName != null && ScnUtil.HasReferenceCode(pointName, pointsDefinition) && coords is not null)
                         {
-                            string[] clearPosition = coords.Trim().Split(",");
                             Coordinate c = Coordinate.Parse(clearPosition[1] + " " + clearPosition[0], new DateTime(2023, 2, 24, 10, 10, 0));
                             Point p = new ()
                             {
                                 C = c,
                                 Code = pointName,
-                                Altitude = altitude?.InnerText,
-                                Heading = heading?.InnerText,
+                                Altitude = altitude,
+                                Heading = heading,
                                 GUID = Util.ObjectName(pointName, pointsDefinition),
+                                isAgl = isAgl,
                             };
                             Points.Add(p);
                         }

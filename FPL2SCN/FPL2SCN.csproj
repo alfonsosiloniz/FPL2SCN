@@ -24,7 +24,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <AdditionalFiles Include="stylecop.json" />
-
     <Content Include="fpl2scn.config"> 
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
     </Content>    

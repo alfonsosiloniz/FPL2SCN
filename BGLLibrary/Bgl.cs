@@ -4,6 +4,7 @@
     using Serilog;
     using Serilog.Core;
     using static BGLLibrary.Util;
+    using System.Globalization;
 
     public class Bgl
     {
@@ -347,6 +348,21 @@
             foreach (Point point in points)
             {
                 LibraryObject lObj = new (point.GUID, point.C.Longitude.ToDouble(), point.C.Latitude.ToDouble());
+                if (point.Heading is not null)
+                {
+                    lObj.Heading = (UInt16)Math.Round(Convert.ToDouble(point.Heading, CultureInfo.InvariantCulture));
+                }
+
+                if (point.Altitude is not null)
+                {
+                    lObj.Altitude = (UInt32)Math.Round(Convert.ToDouble(point.Altitude, CultureInfo.InvariantCulture));
+                }
+
+                if (!point.isAgl)
+                {
+                    lObj.IsAgl(point.isAgl);
+                }
+
                 logger.Information("Added point {0} Lon {1} Lat {2}", point.Code, point.C.Longitude.ToDouble(), point.C.Latitude.ToDouble());
                 AddLibraryObject(lObj);
                 numberOfPoints++;

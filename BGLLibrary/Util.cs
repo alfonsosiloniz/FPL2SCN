@@ -201,6 +201,14 @@ namespace BGLLibrary
             return list;
         }
 
+        public static UInt16 GetHeadingDWORD(double heading)
+        {
+            if (heading == 360) heading = 0;
+
+            UInt16 headingDWORD = Convert.ToUInt16(heading * 0x10000 / 360.0);
+            return headingDWORD;
+        }
+
         public static double GetLongitudeDecimal(byte[] coord)
         {
             double lon = (BitConverter.ToUInt32(coord) * (360.0 / (3 * 0x10000000))) - 180.00;
@@ -298,12 +306,12 @@ namespace BGLLibrary
                 element2.SetAttribute("lon", coord.Longitude.ToDouble().ToString(CultureInfo.InvariantCulture));
                 Util.CalcQmidFromCoord(coord.Latitude.ToDouble(), coord.Longitude.ToDouble(), 11);
 
-                element2.SetAttribute("alt", "0.0");
+                element2.SetAttribute("alt", point.Altitude);
                 element2.SetAttribute("pitch", "0.0");
                 element2.SetAttribute("bank", "0.0");
-                element2.SetAttribute("heading", "180.0");
+                element2.SetAttribute("heading", point.Heading);
                 element2.SetAttribute("imageComplexity", "VERY_SPARSE");
-                element2.SetAttribute("altitudeIsAgl", "TRUE");
+                element2.SetAttribute("altitudeIsAgl", point.isAgl ? "TRUE" : "FALSE");
                 element2.SetAttribute("snapToGround", "TRUE");
                 element2.SetAttribute("snapToNormal", "FALSE");
 
@@ -328,6 +336,8 @@ namespace BGLLibrary
             public string? Heading;
             public string? Altitude;
             public string? GUID;
+            public bool isAgl;
+
         }
     }
 }

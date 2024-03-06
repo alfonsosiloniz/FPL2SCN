@@ -19,11 +19,23 @@ namespace BGLLibrary
         private UInt16 RecSize { get; set; } = 0;
 
         private UInt16 recType = 0x0B;
-        private UInt32 altitude = 0;
+        private UInt16 _heading = 0x8000;
+        public UInt16 Heading
+        {
+            get
+                {
+                    return _heading;
+                }
+            set
+                {
+                    _heading = Util.GetHeadingDWORD(value);
+                }
+        }
+
         private UInt16 properties = 0x01;
         private UInt16 pitch = 0;
         private UInt16 bank = 0;
-        private UInt16 heading = 0x8000;
+        public UInt32 Altitude { get; set; } = 0;
         private UInt16 imageComplexity = 0;
         private UInt16 unk = 0;
 
@@ -36,6 +48,17 @@ namespace BGLLibrary
             Name = Util.ConvertGUIToBytes(name);
         }
 
+        public void IsAgl(bool isAgl) 
+        {
+            if (isAgl)
+            {
+                properties = 0x01;
+            }
+            else
+            {
+                properties = 0x00;
+            }
+        }
         public byte[] GetBytes()
         {
             List<byte[]> lHdr = new ();
@@ -46,11 +69,11 @@ namespace BGLLibrary
             lHdr.Add(BitConverter.GetBytes(RecSize));
             lHdr.Add(BitConverter.GetBytes(Longitude));
             lHdr.Add(BitConverter.GetBytes(Latitude));
-            lHdr.Add(BitConverter.GetBytes(altitude));
+            lHdr.Add(BitConverter.GetBytes(Altitude * 1000));
             lHdr.Add(BitConverter.GetBytes(properties));
             lHdr.Add(BitConverter.GetBytes(pitch));
             lHdr.Add(BitConverter.GetBytes(bank));
-            lHdr.Add(BitConverter.GetBytes(heading));
+            lHdr.Add(BitConverter.GetBytes(Heading));
             lHdr.Add(BitConverter.GetBytes(imageComplexity));
             lHdr.Add(BitConverter.GetBytes(unk));
             lHdr.Add(InstanceId);

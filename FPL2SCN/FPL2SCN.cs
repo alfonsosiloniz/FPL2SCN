@@ -74,6 +74,8 @@ namespace VisualPointsNamespace
                     {
                         logger.Information("KML FORMAT DETECTED");
                         xmlFile = new KmlFile(doc);
+                        xmlFile.UseAltitude(options.UseAltitude);
+                        xmlFile.UseHeading(options.UseHeading);
                     }
                     else if (FplFile.IsType(doc))
                     {

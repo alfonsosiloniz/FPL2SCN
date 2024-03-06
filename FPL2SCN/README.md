@@ -18,6 +18,7 @@ You don´t need to use the MSFS SDK to obtain the Package. This Package can be c
 
 You need to generate a KML file (With Google Earth or others) or a PLN flight plan for MSFS2020 (With Little Nav Map or Plan G, etc) as usual. 
 
+
 If you want that the tool includes any of those coordinate points in the MSFS scenery, you need to prefix them in the name with any of the KEY values included in the fpl2scn.config file. 
 
 For instance
@@ -33,6 +34,14 @@ Any point in the files that don´t include a KEY will be ignored when creating t
 
 Once finished, you can directly copy the contents on MSFS_Package into your Community folder in MSFS 2020.
 
+### KML Files
+
+In Google Earth you have the possibility to include more information in the markers that can be used by the tools. That is:
+
+* The altitude of the marker: Google Earth offers several options. The best would be to choose "Relative to the Ground" and set the altitude to 0 (if it is on the ground) or a height (altitude over the ground). Those options would offer the best localisation in the simulator.
+* The heading. It is not possible to define the marker heading, but, there is a "Camera" option. Just define a Heading for the camera and the tool will understand that is the heading for the object in the scenery. 
+* You need to add the options -g for heading and/or -a for altitude so the tool uses that information. By default the objects will be considered on the ground and with heading 180º
+
 
 ## Execution
 
@@ -46,13 +55,17 @@ A console window will open where you can see the result of the operation. Press 
 
     filename    Required. Input file path + name (KML or PLN)
 
-    -o, --output    Output file path for XML file. By default it will use the included SeceneryProject folder under PackageSources
+    -x, --xml        Generate the XML file for ulterior compilation. Optional.
 
-    -x, --xml       Generate the XML file.
+    -o, --output     Complete filepath for XML file where visualpoints.xml file is to be located. Optional. By default will be included in the correct path under SceneryProject.
 
-    --help          Display this help screen.
+    -g, --heading    Use heading from the KML file
 
-    --version       Display version information.
+    -a, --alt        Use altitude from the KML file. Will be considered MSL or AGL depending on the altitude mode in KML file.
+
+    --help           Display this help screen.
+
+    --version        Display version information.
 
 
 ## Configuration
